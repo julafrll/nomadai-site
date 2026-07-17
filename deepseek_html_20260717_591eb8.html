@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NomadAI — AI-гид по Бишкеку</title>
+  <meta name="description" content="NomadAI — умный гид по Бишкеку в Telegram: проверенные места, маршруты, челленджи и AI-помощник.">
+  <!-- Telegram Mini App SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    :root {
+      --bg: #0e1620;
+      --card: #17212b;
+      --card2: #1d2b38;
+      --text: #eef4f8;
+      --muted: #9fb2c0;
+      --accent: #33b1ff;
+      --accent2: #2ee6a6;
+      --border: rgba(255, 255, 255, 0.08);
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 22px 18px 60px;
+    }
+
+    /* language toggle */
+    .lang-toggle {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+      margin-bottom: 18px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(51, 177, 255, 0.25);
+    }
+    .lang-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(160deg, #1b3a4b 0%, #101f2b 65%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 38px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: "🏔️";
+      position: absolute;
+      right: -12px;
+      top: -16px;
+      font-size: 130px;
+      opacity: 0.10;
+      transform: rotate(8deg);
+    }
+    .logo {
+      width: 88px;
+      height: 88px;
+      border-radius: 24px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 34px rgba(51, 177, 255, 0.35);
+    }
+    .brand {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+    }
+    .brand span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .slogan {
+      color: var(--accent2);
+      font-weight: 600;
+      margin-top: 6px;
+      font-size: 15px;
+    }
+    .tagline {
+      color: var(--muted);
+      margin-top: 12px;
+      font-size: 15px;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .stats {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .stat {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 14px;
+    }
+    .stat b {
+      display: block;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .stat span {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    /* SECTION */
+    .section {
+      margin-top: 30px;
+    }
+    .section-title {
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 4px 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+    }
+    .card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card p {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .feat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      transition: transform 0.12s ease, border-color 0.12s ease;
+      cursor: pointer;
+    }
+    .feat:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+    .feat .ic {
+      font-size: 26px;
+    }
+    .feat .ft {
+      font-weight: 800;
+      margin-top: 8px;
+      font-size: 15px;
+    }
+    .feat .fd {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* PARTNERS */
+    .partners {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .partner {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color 0.12s ease;
+    }
+    .partner:hover {
+      border-color: var(--accent2);
+    }
+    .partner .pl {
+      font-size: 26px;
+    }
+    .partner .pn {
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .partner .pd {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+    .partner.add {
+      border-style: dashed;
+      justify-content: center;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13.5px;
+    }
+
+    /* TEAM */
+    .team {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .team .ava {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+    }
+    .team .tn {
+      font-weight: 800;
+      font-size: 16px;
+    }
+    .team .tr {
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+
+    /* SOCIAL / CTA */
+    .socials {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: transform 0.12s ease, border-color 0.12s ease;
+    }
+    .chip:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+    .cta {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      margin-top: 26px;
+      background: linear-gradient(135deg, var(--accent), #1e8fd6);
+      color: #fff;
+      font-weight: 800;
+      font-size: 17px;
+      padding: 18px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(51, 177, 255, 0.35);
+      transition: transform 0.12s ease;
+    }
+    .cta:active {
+      transform: scale(0.98);
+    }
+    .cta small {
+      display: block;
+      font-weight: 500;
+      font-size: 12.5px;
+      opacity: 0.85;
+      margin-top: 3px;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-top: 30px;
+    }
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* responsive */
+    @media (max-width: 480px) {
+      .features {
+        grid-template-columns: 1fr;
+      }
+      .partners {
+        grid-template-columns: 1fr;
+      }
+      .lang-toggle {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- language toggle -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="ru">🇷🇺 Русский</button>
+    <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <div class="hero">
+    <div class="logo">🏕️</div>
+    <div class="brand">Nomad<span>AI</span></div>
+    <div class="slogan" data-i18n="hero-slogan">Умный гид по Бишкеку в Telegram</div>
+    <p class="tagline" data-i18n="hero-tagline">Проверенные места, маршруты, челленджи и AI-помощник — всё, чтобы узнать город и не потеряться.</p>
+    <div class="stats">
+      <div class="stat"><b>60+</b><span data-i18n="stat-places">мест в базе</span></div>
+      <div class="stat"><b>5</b><span data-i18n="stat-challenges">челленджей</span></div>
+      <div class="stat"><b>RU / EN</b><span data-i18n="stat-lang">два языка</span></div>
+      <div class="stat"><b>24/7</b><span data-i18n="stat-online">онлайн</span></div>
+    </div>
+  </div>
+
+  <!-- ============ О ПРОЕКТЕ ============ -->
+  <div class="section">
+    <div class="section-title" data-i18n="about-title">О проекте</div>
+    <div class="card">
+      <h2>🏕️ <span data-i18n="about-heading">Что такое NomadAI</span></h2>
+      <p data-i18n="about-text">NomadAI — это Telegram-бот, который заменяет туристический справочник по Бишкеку. Он собирает проверенные кафе, парки, музеи и рынки, строит персональные маршруты под твой бюджет, предлагает игровые челленджи и отвечает на любые вопросы о городе с помощью AI. Всё бесплатно и на двух языках.</p>
+    </div>
+  </div>
+
+  <!-- ============ ФУНКЦИИ ============ -->
+  <div class="section">
+    <div class="section-title" data-i18n="features-title">Основные функции</div>
+    <div class="features">
+      <div class="feat" data-key="food"><div class="ic">🍽</div><div class="ft" data-i18n="f-food">Еда и кофе</div><div class="fd" data-i18n="f-food-desc">Кыргызская кухня, кофейни, бюджет и премиум</div></div>
+      <div class="feat" data-key="places"><div class="ic">🏛</div><div class="ft" data-i18n="f-places">Куда сходить</div><div class="fd" data-i18n="f-places-desc">Парки, музеи, театры, рынки и достопримечательности</div></div>
+      <div class="feat" data-key="routes"><div class="ic">🗺</div><div class="ft" data-i18n="f-routes">Маршруты</div><div class="fd" data-i18n="f-routes-desc">План по дням и бюджету за пару нажатий</div></div>
+      <div class="feat" data-key="challenges"><div class="ic">🎯</div><div class="ft" data-i18n="f-challenges">Челленджи</div><div class="fd" data-i18n="f-challenges-desc">Задания, значки и очки за исследование города</div></div>
+      <div class="feat" data-key="ai"><div class="ic">🤖</div><div class="ft" data-i18n="f-ai">AI-Гид</div><div class="fd" data-i18n="f-ai-desc">Ответит на любой вопрос о Бишкеке и не только</div></div>
+      <div class="feat" data-key="tours"><div class="ic">🏔</div><div class="ft" data-i18n="f-tours">Туры</div><div class="fd" data-i18n="f-tours-desc">Экскурсии и туры по Кыргызстану</div></div>
+      <div class="feat" data-key="events"><div class="ic">🎫</div><div class="ft" data-i18n="f-events">События</div><div class="fd" data-i18n="f-events-desc">Афиша концертов, спектаклей и выставок</div></div>
+      <div class="feat" data-key="currency"><div class="ic">💱</div><div class="ft" data-i18n="f-currency">Курс валют</div><div class="fd" data-i18n="f-currency-desc">Актуальный курс сома и конвертер</div></div>
+    </div>
+  </div>
+
+  <!-- ============ ПАРТНЁРЫ ============ -->
+  <div class="section">
+    <div class="section-title" data-i18n="partners-title">Партнёры и источники данных</div>
+    <div class="partners">
+      <a class="partner" href="https://2gis.kg/bishkek" target="_blank">
+        <div class="pl">🗺️</div>
+        <div><div class="pn">2GIS</div><div class="pd" data-i18n="p-2gis">Карты и адреса мест</div></div>
+      </a>
+      <a class="partner" href="https://ticket.kg" target="_blank">
+        <div class="pl">🎫</div>
+        <div><div class="pn">Ticket.kg</div><div class="pd" data-i18n="p-ticket">Афиша событий города</div></div>
+      </a>
+      <a class="partner" href="https://www.practicuma.online" target="_blank">
+        <div class="pl">🏔</div>
+        <div><div class="pn">PracticUma</div><div class="pd" data-i18n="p-practicuma">Туры по Кыргызстану</div></div>
+      </a>
+      <a class="partner add" href="#contacts" data-i18n="p-partner">+ Стать партнёром</a>
+    </div>
+  </div>
+
+  <!-- ============ КОМАНДА ============ -->
+  <div class="section">
+    <div class="section-title" data-i18n="team-title">Команда</div>
+    <div class="card">
+      <div class="team">
+        <div class="ava">⚡</div>
+        <div>
+          <div class="tn" data-i18n="team-name">Команда Prime</div>
+          <div class="tr" data-i18n="team-desc">Разработка и развитие проекта NomadAI</div>
+        </div>
+      </div>
+      <div class="socials">
+        <a class="chip" href="https://www.instagram.com/nomad__ai/" target="_blank">📸 Instagram @nomad__ai</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ КОНТАКТЫ ============ -->
+  <div class="section" id="contacts">
+    <div class="section-title" data-i18n="contacts-title">Контакты · сотрудничество</div>
+    <div class="card">
+      <h2>🤝 <span data-i18n="contacts-heading">Стать партнёром</span></h2>
+      <p data-i18n="contacts-text">Хочешь разместить своё место, событие или тур в NomadAI, либо предложить сотрудничество? Напиши нам — ответим быстро.</p>
+      <div class="socials" style="justify-content:flex-start">
+        <a class="chip" href="mailto:nomadai0903@gmail.com">✉️ nomadai0903@gmail.com</a>
+        <a class="chip" href="https://wa.me/996755009777" target="_blank">💬 WhatsApp +996 755 009 777</a>
+        <a class="chip" href="https://www.instagram.com/nomad__ai/" target="_blank">📸 Instagram @nomad__ai</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ КНОПКА ============ -->
+  <a class="cta" href="https://t.me/prime_nomad_ai_bot" target="_blank">
+    🚀 <span data-i18n="cta-text">Открыть бота в Telegram</span>
+    <small>@prime_nomad_ai_bot</small>
+  </a>
+
+  <div class="footer">
+    <span data-i18n="footer">Сделано с ❤️ в Бишкеке</span> · <a href="https://www.instagram.com/nomad__ai/" target="_blank">@nomad__ai</a>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    // Telegram Mini App
+    try {
+      const tg = window.Telegram && window.Telegram.WebApp;
+      if (tg) {
+        tg.ready();
+        tg.expand();
+      }
+    } catch (e) {}
+
+    // ----- i18n dictionaries -----
+    const translations = {
+      ru: {
+        "hero-slogan": "Умный гид по Бишкеку в Telegram",
+        "hero-tagline": "Проверенные места, маршруты, челленджи и AI-помощник — всё, чтобы узнать город и не потеряться.",
+        "stat-places": "мест в базе",
+        "stat-challenges": "челленджей",
+        "stat-lang": "два языка",
+        "stat-online": "онлайн",
+        "about-title": "О проекте",
+        "about-heading": "Что такое NomadAI",
+        "about-text": "NomadAI — это Telegram-бот, который заменяет туристический справочник по Бишкеку. Он собирает проверенные кафе, парки, музеи и рынки, строит персональные маршруты под твой бюджет, предлагает игровые челленджи и отвечает на любые вопросы о городе с помощью AI. Всё бесплатно и на двух языках.",
+        "features-title": "Основные функции",
+        "f-food": "Еда и кофе",
+        "f-food-desc": "Кыргызская кухня, кофейни, бюджет и премиум",
+        "f-places": "Куда сходить",
+        "f-places-desc": "Парки, музеи, театры, рынки и достопримечательности",
+        "f-routes": "Маршруты",
+        "f-routes-desc": "План по дням и бюджету за пару нажатий",
+        "f-challenges": "Челленджи",
+        "f-challenges-desc": "Задания, значки и очки за исследование города",
+        "f-ai": "AI-Гид",
+        "f-ai-desc": "Ответит на любой вопрос о Бишкеке и не только",
+        "f-tours": "Туры",
+        "f-tours-desc": "Экскурсии и туры по Кыргызстану",
+        "f-events": "События",
+        "f-events-desc": "Афиша концертов, спектаклей и выставок",
+        "f-currency": "Курс валют",
+        "f-currency-desc": "Актуальный курс сома и конвертер",
+        "partners-title": "Партнёры и источники данных",
+        "p-2gis": "Карты и адреса мест",
+        "p-ticket": "Афиша событий города",
+        "p-practicuma": "Туры по Кыргызстану",
+        "p-partner": "+ Стать партнёром",
+        "team-title": "Команда",
+        "team-name": "Команда Prime",
+        "team-desc": "Разработка и развитие проекта NomadAI",
+        "contacts-title": "Контакты · сотрудничество",
+        "contacts-heading": "Стать партнёром",
+        "contacts-text": "Хочешь разместить своё место, событие или тур в NomadAI, либо предложить сотрудничество? Напиши нам — ответим быстро.",
+        "cta-text": "Открыть бота в Telegram",
+        "footer": "Сделано с ❤️ в Бишкеке"
+      },
+      en: {
+        "hero-slogan": "Smart guide to Bishkek in Telegram",
+        "hero-tagline": "Verified places, routes, challenges and AI assistant — everything to explore the city and not get lost.",
+        "stat-places": "places in base",
+        "stat-challenges": "challenges",
+        "stat-lang": "two languages",
+        "stat-online": "online",
+        "about-title": "About",
+        "about-heading": "What is NomadAI",
+        "about-text": "NomadAI is a Telegram bot that replaces a travel guide to Bishkek. It collects verified cafes, parks, museums and markets, builds personalized routes according to your budget, offers game challenges and answers any questions about the city using AI. It's all free and in two languages.",
+        "features-title": "Main features",
+        "f-food": "Food & Coffee",
+        "f-food-desc": "Kyrgyz cuisine, coffee shops, budget & premium",
+        "f-places": "Where to go",
+        "f-places-desc": "Parks, museums, theaters, markets and sights",
+        "f-routes": "Routes",
+        "f-routes-desc": "Day-by-day plan according to budget in a few clicks",
+        "f-challenges": "Challenges",
+        "f-challenges-desc": "Quests, badges and points for exploring the city",
+        "f-ai": "AI Guide",
+        "f-ai-desc": "Answers any question about Bishkek and beyond",
+        "f-tours": "Tours",
+        "f-tours-desc": "Excursions and tours around Kyrgyzstan",
+        "f-events": "Events",
+        "f-events-desc": "Concerts, plays and exhibitions poster",
+        "f-currency": "Currency",
+        "f-currency-desc": "Current som rate and converter",
+        "partners-title": "Partners & data sources",
+        "p-2gis": "Maps and addresses",
+        "p-ticket": "City events poster",
+        "p-practicuma": "Tours around Kyrgyzstan",
+        "p-partner": "+ Become a partner",
+        "team-title": "Team",
+        "team-name": "Prime Team",
+        "team-desc": "Development and growth of NomadAI",
+        "contacts-title": "Contacts · partnership",
+        "contacts-heading": "Become a partner",
+        "contacts-text": "Want to feature your place, event or tour in NomadAI, or suggest collaboration? Write to us — we'll reply fast.",
+        "cta-text": "Open bot in Telegram",
+        "footer": "Made with ❤️ in Bishkek"
+      }
+    };
+
+    // get current language from localStorage or default 'ru'
+    let currentLang = localStorage.getItem('nomadai-lang') || 'ru';
+    if (!['ru', 'en'].includes(currentLang)) currentLang = 'ru';
+
+    // update UI with selected language
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('nomadai-lang', lang);
+
+      // toggle active class on buttons
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+
+      // translate all elements with data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (translations[lang] && translations[lang][key] !== undefined) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      // update document lang
+      document.documentElement.lang = lang;
+    }
+
+    // language switch buttons
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const lang = this.dataset.lang;
+        setLanguage(lang);
+      });
+    });
+
+    // init language
+    setLanguage(currentLang);
+
+    // ----- feature click: show info message -----
+    document.querySelectorAll('.feat').forEach(feat => {
+      feat.addEventListener('click', function() {
+        const key = this.dataset.key;
+        const nameEl = this.querySelector('.ft');
+        let name = nameEl ? nameEl.textContent : 'Функция';
+        // try to get i18n name if available
+        const i18nKey = this.querySelector('.ft')?.dataset?.i18n;
+        if (i18nKey && translations[currentLang] && translations[currentLang][i18nKey]) {
+          name = translations[currentLang][i18nKey];
+        }
+        // message depends on language
+        let msg;
+        if (currentLang === 'en') {
+          msg = `🔍 "${name}" — this feature is available in the bot. Open NomadAI in Telegram to try it!`;
+        } else {
+          msg = `🔍 "${name}" — эта функция доступна в боте. Открой NomadAI в Telegram и попробуй!`;
+        }
+        alert(msg);
+      });
+    });
+
+  })();
+</script>
+</body>
+</html>
