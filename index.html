@@ -382,6 +382,55 @@
     .ninfo { color: var(--muted); font-size: 15px; padding: 26px 10px; text-align: center; }
     .nbot { display: inline-block; margin-top: 18px; background: linear-gradient(135deg, var(--accent), #1e8fd6);
       color: #fff; text-decoration: none; font-weight: 800; padding: 13px 22px; border-radius: 14px; }
+    /* catalog controls */
+    .modal-tools { padding: 10px 16px 4px; border-bottom: 0.5px solid var(--border); }
+    .modal-search { width: 100%; background: var(--card2); border: 1px solid var(--border);
+      color: var(--text); border-radius: 12px; padding: 12px 14px; font-size: 14px; outline: none; }
+    .modal-search:focus { border-color: var(--accent); }
+    .modal-chips { display: flex; gap: 8px; overflow-x: auto; padding: 10px 0 4px; }
+    .modal-chips::-webkit-scrollbar { display: none; }
+    .chip-f { flex: 0 0 auto; background: var(--card2); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 20px; padding: 8px 14px; font-size: 13px;
+      font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .chip-f.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .modal-count { font-size: 12px; color: var(--muted); padding: 4px 2px 8px; }
+    .np-meta { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    .np-type { background: rgba(46,230,166,.14); color: var(--accent2); font-size: 11.5px;
+      font-weight: 700; padding: 2px 9px; border-radius: 8px; }
+    .nempty { color: var(--muted); text-align: center; padding: 42px 10px; font-size: 14px; }
+    /* on-page catalog tiles */
+    .cat-tiles { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .cat-tile { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 16px; color: var(--text); cursor: pointer;
+      transition: border-color .12s ease, transform .12s ease; }
+    .cat-tile:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .cat-tile .ct-ic { font-size: 26px; }
+    .cat-tile .ct-l { font-weight: 800; font-size: 15px; flex: 1; }
+    .cat-tile .ct-n { background: var(--card2); color: var(--muted); font-size: 13px;
+      font-weight: 700; padding: 3px 11px; border-radius: 20px; }
+    /* sticky CTA */
+    .sticky-cta { position: fixed; left: 50%; bottom: 16px; transform: translate(-50%, 150%);
+      background: linear-gradient(135deg, var(--accent), #1e8fd6); color: #fff; font-weight: 800;
+      font-size: 15px; padding: 13px 24px; border-radius: 30px; text-decoration: none;
+      box-shadow: 0 10px 30px rgba(51,177,255,.4); transition: transform .25s ease;
+      z-index: 40; white-space: nowrap; }
+    .sticky-cta.show { transform: translate(-50%, 0); }
+    .np-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .np-actions .np-link { margin-top: 0; }
+    .np-review { background: rgba(46,230,166,.12); color: var(--accent2); }
+    .np-review:hover { border-color: var(--accent2); }
+    .fb-stars { display: flex; gap: 8px; font-size: 28px; margin: 14px 0 12px; cursor: pointer; }
+    .fb-stars span { opacity: .28; transition: transform .1s ease, opacity .1s ease; }
+    .fb-stars span.on { opacity: 1; }
+    .fb-stars span:hover { transform: scale(1.15); }
+    .fb-text { width: 100%; background: var(--card2); border: 1px solid var(--border); color: var(--text);
+      border-radius: 12px; padding: 12px 14px; font-size: 14px; font-family: inherit; resize: vertical; outline: none; }
+    .fb-text:focus { border-color: var(--accent); }
+    .fb-send { margin-top: 12px; width: 100%; background: linear-gradient(135deg, var(--accent), #1e8fd6);
+      color: #fff; border: none; font-weight: 800; font-size: 15px; padding: 13px; border-radius: 14px; cursor: pointer; }
+    .fb-send:active { transform: scale(.99); }
+    .fb-alt { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   </style>
 </head>
 <body>
@@ -433,6 +482,16 @@
     </div>
   </div>
 
+  <!-- ============ КАТАЛОГ ============ -->
+  <div class="section" id="catalog">
+    <div class="section-title" data-i18n="catalog-title">Каталог мест</div>
+    <p class="feat-hint" data-i18n="catalog-lead">Загляни в каталог — что уже есть в боте.</p>
+    <div class="cat-tiles">
+      <button class="cat-tile" data-open="food"><span class="ct-ic">🍽</span><span class="ct-l" data-i18n="f-food">Еда и кофе</span><span class="ct-n" data-count="food"></span></button>
+      <button class="cat-tile" data-open="places"><span class="ct-ic">🏛</span><span class="ct-l" data-i18n="f-places">Куда сходить</span><span class="ct-n" data-count="places"></span></button>
+      <button class="cat-tile" data-open="stay"><span class="ct-ic">🏨</span><span class="ct-l" data-i18n="f-stay">Гостиницы</span><span class="ct-n" data-count="stay"></span></button>
+    </div>
+  </div>
   <!-- ============ ПАРТНЁРЫ ============ -->
   <div class="section">
     <div class="section-title" data-i18n="partners-title">Партнёры и источники данных</div>
@@ -471,6 +530,21 @@
   </div>
 
   <!-- ============ КОНТАКТЫ ============ -->
+  <!-- ============ ОТЗЫВ О ПЛАТФОРМЕ ============ -->
+  <div class="section" id="feedback">
+    <div class="section-title" data-i18n="fb-title">Отзыв о NomadAI</div>
+    <div class="card">
+      <h2>💬 <span data-i18n="fb-heading">Оцени платформу</span></h2>
+      <p data-i18n="fb-lead">Твой отзыв помогает нам стать лучше. Поставь оценку и напиши пару слов.</p>
+      <div class="fb-stars" id="fbStars"><span data-v="1">🥛</span><span data-v="2">🥛</span><span data-v="3">🥛</span><span data-v="4">🥛</span><span data-v="5">🥛</span></div>
+      <textarea class="fb-text" id="fbText" rows="3"></textarea>
+      <button class="fb-send" id="fbSend" data-i18n="fb-send">Отправить отзыв</button>
+      <div class="fb-alt">
+        <a class="chip" href="https://t.me/prime_nomad_ai_bot" target="_blank">✍️ <span data-i18n="fb-tg">В Telegram</span></a>
+        <a class="chip" href="https://www.instagram.com/nomad__ai/" target="_blank">📸 Instagram</a>
+      </div>
+    </div>
+  </div>
   <div class="section" id="contacts">
     <div class="section-title" data-i18n="contacts-title">Контакты · сотрудничество</div>
     <div class="card">
@@ -496,12 +570,18 @@
 
 </div>
 
+<a class="sticky-cta" id="stickyCta" href="https://t.me/prime_nomad_ai_bot" target="_blank" rel="noopener" data-i18n="sticky-cta">🚀 Открыть бота</a>
 <!-- ============ CATALOG MODAL ============ -->
 <div class="modal" id="nmodal">
   <div class="modal-card">
     <div class="modal-head">
       <div class="modal-title" id="nmodalTitle"></div>
       <button class="modal-x" id="nmodalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-tools" id="nmodalTools">
+      <input class="modal-search" id="nmodalSearch" type="text" />
+      <div class="modal-chips" id="nmodalChips"></div>
+      <div class="modal-count" id="nmodalCount"></div>
     </div>
     <div class="modal-body" id="nmodalBody"></div>
   </div>
@@ -580,7 +660,25 @@
         "features-hint": "Нажми на карточку, чтобы посмотреть каталог прямо здесь.",
         "modal-route": "Маршрут",
         "cat-open-bot": "Эта функция доступна в Telegram-боте. Открой NomadAI, чтобы попробовать её.",
-        "open-in-tg": "Открыть в Telegram"
+        "open-in-tg": "Открыть в Telegram",
+        "cat-all": "Все",
+        "results": "мест",
+        "nothing": "Ничего не найдено. Попробуй другое слово.",
+        "search-ph": "Поиск по названию или адресу",
+        "catalog-title": "Каталог мест",
+        "catalog-lead": "Загляни в каталог — что уже есть в боте.",
+        "sticky-cta": "🚀 Открыть бота",
+        "review-btn": "Оставить отзыв",
+        "fb-title": "Отзыв о NomadAI",
+        "fb-heading": "Оцени платформу",
+        "fb-lead": "Твой отзыв помогает нам стать лучше. Поставь оценку и напиши пару слов.",
+        "fb-ph": "Что понравилось, чего не хватает…",
+        "fb-send": "Отправить отзыв",
+        "fb-tg": "В Telegram",
+        "fb-subject": "отзыв о платформе",
+        "fb-rating": "Оценка",
+        "fb-from": "отправлено с сайта NomadAI",
+        "fb-thanks": "Спасибо! ❤️"
       },
       en: {
         "hero-slogan": "Smart guide to Bishkek in Telegram",
@@ -627,7 +725,25 @@
         "features-hint": "Tap a card to browse the catalog right here.",
         "modal-route": "Route",
         "cat-open-bot": "This feature lives in the Telegram bot. Open NomadAI to try it.",
-        "open-in-tg": "Open in Telegram"
+        "open-in-tg": "Open in Telegram",
+        "cat-all": "All",
+        "results": "places",
+        "nothing": "Nothing found. Try another word.",
+        "search-ph": "Search by name or address",
+        "catalog-title": "Places catalog",
+        "catalog-lead": "Browse the catalog — what's already in the bot.",
+        "sticky-cta": "🚀 Open bot",
+        "review-btn": "Leave a review",
+        "fb-title": "Feedback on NomadAI",
+        "fb-heading": "Rate the platform",
+        "fb-lead": "Your feedback helps us improve. Give a rating and a few words.",
+        "fb-ph": "What you liked, what's missing…",
+        "fb-send": "Send feedback",
+        "fb-tg": "In Telegram",
+        "fb-subject": "platform feedback",
+        "fb-rating": "Rating",
+        "fb-from": "sent from the NomadAI site",
+        "fb-thanks": "Thank you! ❤️"
       }
     };
 
@@ -675,65 +791,128 @@
     const modal = document.getElementById('nmodal');
     const modalTitle = document.getElementById('nmodalTitle');
     const modalBody = document.getElementById('nmodalBody');
-    let openFeature = null;
+    const modalTools = document.getElementById('nmodalTools');
+    const modalChips = document.getElementById('nmodalChips');
+    const modalCount = document.getElementById('nmodalCount');
+    const modalSearch = document.getElementById('nmodalSearch');
+    let openFeature = null, activeCat = 'all', query = '';
 
-    function tr(key) {
-      return (translations[currentLang] && translations[currentLang][key]) || translations.ru[key] || key;
+    function tr(key) { return (translations[currentLang] && translations[currentLang][key]) || translations.ru[key] || key; }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+    function fld(item, base) { return item[base + (currentLang === 'en' ? '_en' : '_ru')] || ''; }
+    function catLabel(item) { return fld(item, 'cat'); }
+    function featureItems(feature) { return CATALOG.filter(p => p.feature === feature); }
+    function subCats(feature) {
+      const seen = [], out = [];
+      featureItems(feature).forEach(p => { if (seen.indexOf(p.cat_en) < 0) { seen.push(p.cat_en); out.push(p); } });
+      return out;
     }
-    function esc(s) {
-      return String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    function buildChips(feature) {
+      const items = featureItems(feature);
+      let html = '<button class="chip-f' + (activeCat === 'all' ? ' on' : '') + '" data-cat="all">' + tr('cat-all') + ' · ' + items.length + '</button>';
+      subCats(feature).forEach(rep => {
+        const n = items.filter(p => p.cat_en === rep.cat_en).length;
+        html += '<button class="chip-f' + (activeCat === rep.cat_en ? ' on' : '') + '" data-cat="' + esc(rep.cat_en) + '">' + esc(catLabel(rep)) + ' · ' + n + '</button>';
+      });
+      modalChips.innerHTML = html;
     }
-    function fld(item, base) {
-      return item[base + (currentLang === 'en' ? '_en' : '_ru')] || '';
+    function placeCard(p) {
+      const info = fld(p, 'info');
+      const badge = p.feature === 'stay' ? '<span class="np-type">' + esc(fld(p, 'cat')) + '</span>' : '';
+      return '<div class="nplace">'
+        + '<div class="np-top"><span class="np-name">' + esc(fld(p, 'name')) + '</span>'
+        + '<span class="np-rate">⭐ ' + p.rating + '</span></div>'
+        + '<div class="np-meta">' + badge + '<span class="np-price">' + esc(fld(p, 'price')) + '</span></div>'
+        + '<div class="np-addr">📍 ' + esc(fld(p, 'addr')) + '</div>'
+        + (info ? '<div class="np-info">' + esc(info) + '</div>' : '')
+        + '<a class="np-link" href="' + p.link + '" target="_blank" rel="noopener">🧭 ' + tr('modal-route') + '</a>'
+        + '</div>';
     }
-
-    function renderCatalog(feature) {
-      const items = CATALOG.filter(p => p.feature === feature);
-      modalTitle.textContent = tr(FEATURE_TITLE[feature]);
+    function renderList() {
+      const q = query.trim().toLowerCase();
+      let items = featureItems(openFeature);
+      if (activeCat !== 'all') items = items.filter(p => p.cat_en === activeCat);
+      if (q) items = items.filter(p => (fld(p, 'name') + ' ' + fld(p, 'addr') + ' ' + fld(p, 'info') + ' ' + p.name_en).toLowerCase().indexOf(q) >= 0);
+      modalCount.textContent = items.length + ' ' + tr('results');
+      if (!items.length) { modalBody.innerHTML = '<div class="nempty">' + tr('nothing') + '</div>'; return; }
       let out = '', lastCat = null;
+      const groupHeaders = (activeCat === 'all');
       items.forEach(p => {
-        const cat = fld(p, 'cat');
-        if (cat !== lastCat) { out += '<div class="ncat">' + esc(cat) + '</div>'; lastCat = cat; }
-        const info = fld(p, 'info');
-        out += '<div class="nplace">'
-          + '<div class="np-top"><span class="np-name">' + esc(fld(p, 'name')) + '</span>'
-          + '<span class="np-rate">\u2b50 ' + p.rating + '</span></div>'
-          + '<div class="np-price">' + esc(fld(p, 'price')) + '</div>'
-          + '<div class="np-addr">' + esc(fld(p, 'addr')) + '</div>'
-          + (info ? '<div class="np-info">' + esc(info) + '</div>' : '')
-          + '<a class="np-link" href="' + p.link + '" target="_blank" rel="noopener">\ud83e\udded ' + tr('modal-route') + '</a>'
-          + '</div>';
+        if (groupHeaders) { const c = catLabel(p); if (c !== lastCat) { out += '<div class="ncat">' + esc(c) + '</div>'; lastCat = c; } }
+        out += placeCard(p);
       });
       modalBody.innerHTML = out;
     }
-    function openModal() { modal.classList.add('open'); document.body.style.overflow = 'hidden'; }
-    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; openFeature = null; }
-    function openCatalog(feature) { openFeature = feature; renderCatalog(feature); openModal(); }
+    function renderCatalog(feature) {
+      openFeature = feature;
+      modalTitle.textContent = tr(FEATURE_TITLE[feature]);
+      modalTools.style.display = '';
+      modalSearch.placeholder = tr('search-ph');
+      buildChips(feature);
+      renderList();
+    }
+    function openModal() { modal.classList.add('open'); document.body.style.overflow = 'hidden'; updateSticky(); }
+    function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; openFeature = null; updateSticky(); }
+    function openCatalog(feature) { activeCat = 'all'; query = ''; modalSearch.value = ''; renderCatalog(feature); openModal(); }
     function openInfo() {
       openFeature = null;
       modalTitle.textContent = 'NomadAI';
+      modalTools.style.display = 'none';
+      modalCount.textContent = '';
       modalBody.innerHTML = '<div class="ninfo">' + tr('cat-open-bot')
-        + '<br><a class="nbot" href="https://t.me/prime_nomad_ai_bot" target="_blank" rel="noopener">\ud83d\ude80 '
-        + tr('open-in-tg') + '</a></div>';
+        + '<br><a class="nbot" href="https://t.me/prime_nomad_ai_bot" target="_blank" rel="noopener">🚀 ' + tr('open-in-tg') + '</a></div>';
       openModal();
     }
     document.getElementById('nmodalClose').addEventListener('click', closeModal);
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
+    modalSearch.addEventListener('input', function() { query = this.value; renderList(); });
+    modalChips.addEventListener('click', function(e) {
+      const b = e.target.closest ? e.target.closest('.chip-f') : null;
+      if (!b) return;
+      activeCat = b.dataset.cat;
+      buildChips(openFeature); renderList();
+    });
     document.querySelectorAll('.feat').forEach(feat => {
       feat.addEventListener('click', function() {
         const key = this.dataset.key;
         if (CATALOG_FEATURES[key]) openCatalog(key); else openInfo();
       });
     });
-    // re-render open modal when language changes
+    document.querySelectorAll('[data-open]').forEach(el => {
+      el.addEventListener('click', function() { openCatalog(this.dataset.open); });
+    });
+    document.querySelectorAll('[data-count]').forEach(el => { el.textContent = featureItems(el.dataset.count).length; });
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         if (!modal.classList.contains('open')) return;
         if (openFeature) renderCatalog(openFeature); else openInfo();
       });
     });
+    const fbStars = document.getElementById('fbStars');
+    const fbText = document.getElementById('fbText');
+    const fbSend = document.getElementById('fbSend');
+    let fbRating = 0;
+    function paintStars() { if (!fbStars) return; fbStars.querySelectorAll('span').forEach(s => { s.classList.toggle('on', +s.dataset.v <= fbRating); }); }
+    function setFbPh() { if (fbText) fbText.placeholder = tr('fb-ph'); }
+    if (fbStars) fbStars.querySelectorAll('span').forEach(s => s.addEventListener('click', () => { fbRating = +s.dataset.v; paintStars(); }));
+    setFbPh();
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', setFbPh));
+    if (fbSend) fbSend.addEventListener('click', () => {
+      const txt = (fbText.value || '').trim();
+      if (!fbRating && !txt) { fbText.focus(); return; }
+      const subj = 'NomadAI — ' + tr('fb-subject');
+      const body = tr('fb-rating') + ': ' + (fbRating || '—') + '/5\n\n' + txt + '\n\n— ' + tr('fb-from');
+      window.location.href = 'mailto:nomadai0903@gmail.com?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
+      fbSend.textContent = tr('fb-thanks');
+    });
+    const sticky = document.getElementById('stickyCta');
+    function updateSticky() {
+      const show = window.scrollY > 320 && !modal.classList.contains('open');
+      if (sticky) sticky.classList.toggle('show', show);
+    }
+    window.addEventListener('scroll', updateSticky, { passive: true });
+    updateSticky();
   })();
 </script>
 </body>
