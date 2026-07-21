@@ -431,15 +431,58 @@
       color: #fff; border: none; font-weight: 800; font-size: 15px; padding: 13px; border-radius: 14px; cursor: pointer; }
     .fb-send:active { transform: scale(.99); }
     .fb-alt { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    /* LEFT CATALOG DRAWER */
+    .drawer { position: fixed; inset: 0; background: rgba(4,10,16,.6); backdrop-filter: blur(3px); display: none; z-index: 60; }
+    .drawer.open { display: block; }
+    .drawer-panel { position: absolute; left: 0; top: 0; height: 100%; width: 86%; max-width: 360px;
+      background: var(--card); border-right: 1px solid var(--border); transform: translateX(-100%);
+      transition: transform .25s ease; display: flex; flex-direction: column; overflow: hidden; }
+    .drawer.open .drawer-panel { transform: translateX(0); }
+    .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 16px;
+      border-bottom: 0.5px solid var(--border); }
+    .drawer-title { font-size: 17px; font-weight: 800; }
+    .drawer-scroll { overflow-y: auto; flex: 1; }
+    .dcat { display: flex; align-items: center; gap: 12px; padding: 14px 14px; border-bottom: 0.5px solid var(--border); cursor: pointer; }
+    .dcat:hover { background: var(--card2); }
+    .dcat .di { font-size: 22px; width: 26px; text-align: center; }
+    .dcat .dn { flex: 1; font-weight: 600; font-size: 14px; }
+    .dcat .dc { color: var(--muted); font-size: 13px; font-weight: 700; background: var(--card2); padding: 2px 11px; border-radius: 20px; }
+    .dback { background: none; border: none; color: var(--accent); font-size: 14px; font-weight: 600; cursor: pointer; padding: 12px 14px 4px; }
+    .dsub-title { font-size: 16px; font-weight: 800; padding: 2px 16px 0; }
+    .drawer .modal-search { margin: 12px 14px 6px; width: calc(100% - 28px); }
+    .drawer .modal-count { padding: 4px 16px 8px; }
+    .drawer .modal-body { padding: 4px 14px 26px; }
+    .drawer-hint { position: fixed; left: 0; top: 50%; transform: translateY(-50%); background: var(--accent);
+      color: #fff; font-size: 11px; font-weight: 700; padding: 10px 5px; border-radius: 0 10px 10px 0; z-index: 30;
+      writing-mode: vertical-rl; letter-spacing: 1px; opacity: .85; }
+    /* topbar + hamburger */
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .topbar .lang-toggle { margin-bottom: 0; }
+    .menu-btn { background: var(--card2); border: 1px solid var(--border); color: var(--text);
+      font-size: 20px; width: 42px; height: 42px; border-radius: 12px; cursor: pointer; line-height: 1; }
+    .menu-btn:hover { border-color: var(--accent); }
+    /* nav drawer rows */
+    .dnav { display: flex; align-items: center; gap: 10px; padding: 13px 16px; color: var(--text);
+      text-decoration: none; font-size: 15px; font-weight: 600; cursor: pointer; border-bottom: 0.5px solid var(--border); }
+    .dnav:hover { background: var(--card2); }
+    .dnav > span { flex: 1; }
+    .dnav .dc { flex: 0 0 auto; color: var(--muted); font-size: 13px; font-weight: 700;
+      background: var(--card2); padding: 2px 10px; border-radius: 20px; }
+    .dnav-sub { padding-left: 34px; font-weight: 500; font-size: 14px; }
+    .dnav-sec { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent2);
+      font-weight: 700; padding: 16px 16px 8px; }
   </style>
 </head>
 <body>
 <div class="wrap">
 
   <!-- language toggle -->
-  <div class="lang-toggle">
-    <button class="lang-btn active" data-lang="ru">🇷🇺 Русский</button>
-    <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+  <div class="topbar">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="ru">🇷🇺 Русский</button>
+      <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+    </div>
   </div>
 
   <!-- ============ HERO ============ -->
@@ -468,11 +511,7 @@
   <!-- ============ ФУНКЦИИ ============ -->
   <div class="section">
     <div class="section-title" data-i18n="features-title">Основные функции</div>
-    <p class="feat-hint" data-i18n="features-hint">Нажми на карточку, чтобы посмотреть каталог прямо здесь.</p>
     <div class="features">
-      <div class="feat" data-key="food"><div class="ic">🍽</div><div class="ft" data-i18n="f-food">Еда и кофе</div><div class="fd" data-i18n="f-food-desc">Кыргызская кухня, кофейни, бюджет и премиум</div></div>
-      <div class="feat" data-key="places"><div class="ic">🏛</div><div class="ft" data-i18n="f-places">Куда сходить</div><div class="fd" data-i18n="f-places-desc">Парки, музеи, театры, рынки и достопримечательности</div></div>
-      <div class="feat" data-key="stay"><div class="ic">🏨</div><div class="ft" data-i18n="f-stay">Гостиницы</div><div class="fd" data-i18n="f-stay-desc">Отели и хостелы Бишкека</div></div>
       <div class="feat" data-key="routes"><div class="ic">🗺</div><div class="ft" data-i18n="f-routes">Маршруты</div><div class="fd" data-i18n="f-routes-desc">План по дням и бюджету за пару нажатий</div></div>
       <div class="feat" data-key="challenges"><div class="ic">🎯</div><div class="ft" data-i18n="f-challenges">Челленджи</div><div class="fd" data-i18n="f-challenges-desc">Задания, значки и очки за исследование города</div></div>
       <div class="feat" data-key="ai"><div class="ic">🤖</div><div class="ft" data-i18n="f-ai">AI-Гид</div><div class="fd" data-i18n="f-ai-desc">Ответит на любой вопрос о Бишкеке и не только</div></div>
@@ -482,16 +521,6 @@
     </div>
   </div>
 
-  <!-- ============ КАТАЛОГ ============ -->
-  <div class="section" id="catalog">
-    <div class="section-title" data-i18n="catalog-title">Каталог мест</div>
-    <p class="feat-hint" data-i18n="catalog-lead">Загляни в каталог — что уже есть в боте.</p>
-    <div class="cat-tiles">
-      <button class="cat-tile" data-open="food"><span class="ct-ic">🍽</span><span class="ct-l" data-i18n="f-food">Еда и кофе</span><span class="ct-n" data-count="food"></span></button>
-      <button class="cat-tile" data-open="places"><span class="ct-ic">🏛</span><span class="ct-l" data-i18n="f-places">Куда сходить</span><span class="ct-n" data-count="places"></span></button>
-      <button class="cat-tile" data-open="stay"><span class="ct-ic">🏨</span><span class="ct-l" data-i18n="f-stay">Гостиницы</span><span class="ct-n" data-count="stay"></span></button>
-    </div>
-  </div>
   <!-- ============ ПАРТНЁРЫ ============ -->
   <div class="section">
     <div class="section-title" data-i18n="partners-title">Партнёры и источники данных</div>
@@ -586,6 +615,24 @@
     <div class="modal-body" id="nmodalBody"></div>
   </div>
 </div>
+<!-- ============ NAV DRAWER (hamburger) ============ -->
+<div class="drawer" id="ndrawer">
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <div class="drawer-title" id="ndTitle" data-i18n="nav-menu">Меню</div>
+      <button class="modal-x" id="ndClose" aria-label="Close">✕</button>
+    </div>
+    <div class="drawer-scroll">
+      <div id="ndNav"></div>
+      <div id="ndPlaces" style="display:none">
+        <button class="dback" id="ndBack">← <span data-i18n="nav-back">Меню</span></button>
+        <div class="dsub-title" id="ndSubTitle"></div>
+        <div class="modal-count" id="ndCount"></div>
+        <div class="modal-body" id="ndBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   (function() {
     // Telegram Mini App
@@ -678,7 +725,20 @@
         "fb-subject": "отзыв о платформе",
         "fb-rating": "Оценка",
         "fb-from": "отправлено с сайта NomadAI",
-        "fb-thanks": "Спасибо! ❤️"
+        "fb-thanks": "Спасибо! ❤️",
+        "d-title": "Каталог мест",
+        "d-cats": "Категории",
+        "d-hint": "Каталог ▸",
+        "nav-menu": "Меню",
+        "nav-home": "Главная",
+        "nav-ai": "AI Маршрут",
+        "nav-catalog": "Каталог мест",
+        "nav-events": "События",
+        "nav-currency": "Курс валют",
+        "nav-fav": "Избранное",
+        "nav-help": "Помощь",
+        "nav-settings": "Настройки",
+        "nav-back": "Меню"
       },
       en: {
         "hero-slogan": "Smart guide to Bishkek in Telegram",
@@ -743,7 +803,20 @@
         "fb-subject": "platform feedback",
         "fb-rating": "Rating",
         "fb-from": "sent from the NomadAI site",
-        "fb-thanks": "Thank you! ❤️"
+        "fb-thanks": "Thank you! ❤️",
+        "d-title": "Places catalog",
+        "d-cats": "Categories",
+        "d-hint": "Catalog ▸",
+        "nav-menu": "Menu",
+        "nav-home": "Home",
+        "nav-ai": "AI Route",
+        "nav-catalog": "Places catalog",
+        "nav-events": "Events",
+        "nav-currency": "Currency",
+        "nav-fav": "Favorites",
+        "nav-help": "Help",
+        "nav-settings": "Settings",
+        "nav-back": "Menu"
       }
     };
 
@@ -876,11 +949,11 @@
     document.querySelectorAll('.feat').forEach(feat => {
       feat.addEventListener('click', function() {
         const key = this.dataset.key;
-        if (CATALOG_FEATURES[key]) openCatalog(key); else openInfo();
+        openInfo();
       });
     });
     document.querySelectorAll('[data-open]').forEach(el => {
-      el.addEventListener('click', function() { openCatalog(this.dataset.open); });
+      el.addEventListener('click', function() { openDrawer(this.dataset.open); });
     });
     document.querySelectorAll('[data-count]').forEach(el => { el.textContent = featureItems(el.dataset.count).length; });
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -906,9 +979,110 @@
       window.location.href = 'mailto:nomadai0903@gmail.com?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
       fbSend.textContent = tr('fb-thanks');
     });
+    // ---- navigation drawer (hamburger) ----
+    const drawer = document.getElementById('ndrawer');
+    const ndTitle = document.getElementById('ndTitle');
+    const ndNav = document.getElementById('ndNav');
+    const ndPlaces = document.getElementById('ndPlaces');
+    const ndBack = document.getElementById('ndBack');
+    const ndSubTitle = document.getElementById('ndSubTitle');
+    const ndCount = document.getElementById('ndCount');
+    const ndBody = document.getElementById('ndBody');
+    let drawerSub = null;
+
+    const SITE_CATS = [
+      { key: 'food',    ic: '🍽', ru: 'Еда',                  en: 'Food' },
+      { key: 'coffee',  ic: '☕', ru: 'Кофейни',              en: 'Coffee' },
+      { key: 'parks',   ic: '🌳', ru: 'Парки',                en: 'Parks' },
+      { key: 'sights',  ic: '🏛', ru: 'Достопримечательности', en: 'Sights' },
+      { key: 'ent',     ic: '🎭', ru: 'Развлечения',          en: 'Entertainment' },
+      { key: 'malls',   ic: '🛍', ru: 'Торговые центры',       en: 'Shopping malls' },
+      { key: 'hotels',  ic: '🏨', ru: 'Отели',                en: 'Hotels' },
+      { key: 'hostels', ic: '🛏', ru: 'Хостелы',              en: 'Hostels' },
+    ];
+    function siteCat(p) {
+      if (p.feature === 'stay') return p.cat_en === 'Hotels' ? 'hotels' : 'hostels';
+      if (p.feature === 'food') return p.cat_en === 'Coffee' ? 'coffee' : 'food';
+      if (p.cat_en === 'Parks & nature') return 'parks';
+      if (/Theatre|Opera|Ballet|Drama|Philharmonic|Circus/i.test(p.name_en)) return 'ent';
+      if (/Bazaar|TSUM|GUM|Mall|Plaza/i.test(p.name_en)) return 'malls';
+      return 'sights';
+    }
+    function catCount(key) { return CATALOG.filter(p => siteCat(p) === key).length; }
+    function catLabelSite(c) { return currentLang === 'en' ? c.en : c.ru; }
+
+    function openBot() {
+      const u = 'https://t.me/prime_nomad_ai_bot';
+      try { const tg = window.Telegram && window.Telegram.WebApp; if (tg && tg.platform && tg.platform !== 'unknown') { tg.openTelegramLink(u); return; } } catch (e) {}
+      window.open(u, '_blank');
+    }
+    function navRow(ic, label, attrs, extra) {
+      return '<a class="dnav ' + (attrs.indexOf('data-sub') >= 0 ? 'dnav-sub' : '') + '" ' + attrs + '>' + ic + ' <span>' + esc(label) + '</span>' + (extra || '') + '</a>';
+    }
+    function buildNav() {
+      let s = '';
+      s += navRow('🏠', tr('nav-home'), 'data-act="home"');
+      s += navRow('✨', tr('nav-ai'), 'data-act="bot"');
+      s += '<div class="dnav-sec">🗺 ' + tr('nav-catalog') + '</div>';
+      SITE_CATS.forEach(c => { const n = catCount(c.key); if (!n) return; s += navRow(c.ic, catLabelSite(c), 'data-sub="' + c.key + '"', '<span class="dc">' + n + '</span>'); });
+      s += navRow('🎟', tr('nav-events'), 'data-act="bot"');
+      s += navRow('💱', tr('nav-currency'), 'data-act="bot"');
+      s += navRow('⭐', tr('nav-fav'), 'data-act="bot"');
+      s += navRow('❓', tr('nav-help'), 'data-act="help"');
+      s += navRow('⚙️', tr('nav-settings'), 'data-act="bot"');
+      ndNav.innerHTML = s;
+    }
+    function showNav() {
+      drawerSub = null;
+      ndPlaces.style.display = 'none'; ndNav.style.display = '';
+      ndTitle.textContent = tr('nav-menu');
+      buildNav();
+    }
+    function showSub(key) {
+      const items = CATALOG.filter(p => siteCat(p) === key);
+      if (!items.length) return;
+      drawerSub = key;
+      const meta = SITE_CATS.find(c => c.key === key);
+      const label = meta ? catLabelSite(meta) : '';
+      ndSubTitle.textContent = label; ndTitle.textContent = label;
+      ndCount.textContent = items.length + ' ' + tr('results');
+      ndBody.innerHTML = items.map(placeCard).join('');
+      ndNav.style.display = 'none'; ndPlaces.style.display = '';
+    }
+    function openDrawer() { showNav(); drawer.classList.add('open'); document.body.style.overflow = 'hidden'; if (typeof updateSticky === 'function') updateSticky(); }
+    function closeDrawer() { drawer.classList.remove('open'); document.body.style.overflow = ''; if (typeof updateSticky === 'function') updateSticky(); }
+
+    document.getElementById('menuBtn').addEventListener('click', openDrawer);
+    document.getElementById('ndClose').addEventListener('click', closeDrawer);
+    drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
+    ndBack.addEventListener('click', showNav);
+    ndNav.addEventListener('click', function (e) {
+      const sub = e.target.closest ? e.target.closest('[data-sub]') : null;
+      if (sub) { showSub(sub.dataset.sub); return; }
+      const a = e.target.closest ? e.target.closest('[data-act]') : null;
+      if (!a) return;
+      const act = a.dataset.act;
+      if (act === 'home') { closeDrawer(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      else if (act === 'help') { closeDrawer(); const c = document.getElementById('contacts'); if (c) c.scrollIntoView({ behavior: 'smooth' }); }
+      else if (act === 'bot') { closeDrawer(); openBot(); }
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => {
+      if (!drawer.classList.contains('open')) return;
+      if (drawerSub) showSub(drawerSub); else showNav();
+    }));
+    let _tsx = 0, _tsy = 0;
+    document.addEventListener('touchstart', e => { _tsx = e.touches[0].clientX; _tsy = e.touches[0].clientY; }, { passive: true });
+    document.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - _tsx, dy = e.changedTouches[0].clientY - _tsy;
+      if (Math.abs(dy) > 70) return;
+      if (!drawer.classList.contains('open') && _tsx < 30 && dx > 70) openDrawer();
+      else if (drawer.classList.contains('open') && dx < -70) closeDrawer();
+    }, { passive: true });
+
     const sticky = document.getElementById('stickyCta');
     function updateSticky() {
-      const show = window.scrollY > 320 && !modal.classList.contains('open');
+      const drOpen = drawer.classList.contains('open');
+      const show = window.scrollY > 320 && !modal.classList.contains('open') && !drOpen;
       if (sticky) sticky.classList.toggle('show', show);
     }
     window.addEventListener('scroll', updateSticky, { passive: true });
