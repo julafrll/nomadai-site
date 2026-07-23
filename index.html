@@ -471,6 +471,39 @@
     .dnav-sub { padding-left: 34px; font-weight: 500; font-size: 14px; }
     .dnav-sec { font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent2);
       font-weight: 700; padding: 16px 16px 8px; }
+    .mc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .mc-close { background: var(--card2); border: 1px solid var(--border); color: var(--text);
+      width: 34px; height: 34px; border-radius: 10px; font-size: 15px; cursor: pointer; }
+    .mc-close:hover { border-color: var(--accent); }
+    .adv-body { white-space: pre-line; font-size: 12.5px; line-height: 1.5; color: var(--muted); margin-top: 6px; }
+    .adv-photo { width: 100%; height: 170px; object-fit: cover; border-radius: 12px; display: block; margin-bottom: 10px; }
+    .adv-photo-ph { display: flex; align-items: center; justify-content: center; font-size: 46px; background: var(--card2); color: var(--muted); }
+    .np-more { cursor: pointer; }
+    #mcBody { display: flex; flex-direction: column; gap: 8px; }
+    .lrow { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px;
+      padding: 12px 13px; display: flex; align-items: center; gap: 11px; cursor: pointer;
+      transition: border-color .12s ease; }
+    .lrow:hover { border-color: var(--accent); }
+    .lr-ic { font-size: 21px; width: 26px; text-align: center; flex: 0 0 auto; }
+    .lr-txt { flex: 1; min-width: 0; }
+    .lr-name { font-size: 14px; font-weight: 600; }
+    .lr-sub { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .lr-ch { color: var(--muted); font-size: 18px; flex: 0 0 auto; }
+    .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 20px; }
+    .pill-easy { background: rgba(93,202,165,.16); color: #5dcaa5; }
+    .pill-mod { background: rgba(240,192,74,.16); color: #f0c04a; }
+    .pill-hard { background: rgba(239,138,138,.16); color: #ef8a8a; }
+    .d-pills { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; margin-top: 8px; color: var(--muted); font-size: 12px; }
+    .d-fact { color: var(--muted); font-size: 12.5px; margin-top: 8px; line-height: 1.5; }
+    .d-note { color: var(--muted); font-size: 11.5px; margin-top: 10px; opacity: .8; }
+    .cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ctile { background: var(--card); border: 0.5px solid var(--border); border-radius: 12px;
+      padding: 12px; display: flex; align-items: center; gap: 9px; cursor: pointer; transition: border-color .12s ease; }
+    .ctile:hover { border-color: var(--accent); }
+    .ctile .cti { font-size: 20px; flex: 0 0 auto; }
+    .ctile .ctn { flex: 1; font-size: 13px; font-weight: 600; min-width: 0; }
+    .ctile .ctc { background: var(--card2); color: var(--muted); font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px; flex: 0 0 auto; }
   </style>
 </head>
 <body>
@@ -499,6 +532,15 @@
     </div>
   </div>
 
+  <!-- ============ CATALOG VIEW (main screen) ============ -->
+  <div class="section" id="mainCatalog" style="display:none">
+    <div class="mc-head">
+      <div class="section-title" id="mcTitle" style="margin:0"></div>
+      <button class="mc-close" id="mcClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-count" id="mcCount"></div>
+    <div id="mcBody"></div>
+  </div>
   <!-- ============ О ПРОЕКТЕ ============ -->
   <div class="section">
     <div class="section-title" data-i18n="about-title">О проекте</div>
@@ -516,6 +558,7 @@
       <div class="feat" data-key="challenges"><div class="ic">🎯</div><div class="ft" data-i18n="f-challenges">Челленджи</div><div class="fd" data-i18n="f-challenges-desc">Задания, значки и очки за исследование города</div></div>
       <div class="feat" data-key="ai"><div class="ic">🤖</div><div class="ft" data-i18n="f-ai">AI-Гид</div><div class="fd" data-i18n="f-ai-desc">Ответит на любой вопрос о Бишкеке и не только</div></div>
       <div class="feat" data-key="tours"><div class="ic">🏔</div><div class="ft" data-i18n="f-tours">Туры</div><div class="fd" data-i18n="f-tours-desc">Экскурсии и туры по Кыргызстану</div></div>
+      <div class="feat" data-key="adv"><div class="ic">🥾</div><div class="ft" data-i18n="f-adv">Приключения</div><div class="fd" data-i18n="f-adv-desc">Хайкинг вне Бишкека: Сон-Куль, Каракол…</div></div>
       <div class="feat" data-key="events"><div class="ic">🎫</div><div class="ft" data-i18n="f-events">События</div><div class="fd" data-i18n="f-events-desc">Афиша концертов, спектаклей и выставок</div></div>
       <div class="feat" data-key="currency"><div class="ic">💱</div><div class="ft" data-i18n="f-currency">Курс валют</div><div class="fd" data-i18n="f-currency-desc">Актуальный курс сома и конвертер</div></div>
     </div>
@@ -684,6 +727,8 @@
         "f-ai": "AI-Гид",
         "f-ai-desc": "Ответит на любой вопрос о Бишкеке и не только",
         "f-tours": "Туры",
+        "f-adv": "Приключения",
+        "f-adv-desc": "Хайкинг вне Бишкека: Сон-Куль, Каракол…",
         "f-tours-desc": "Экскурсии и туры по Кыргызстану",
         "f-events": "События",
         "f-events-desc": "Афиша концертов, спектаклей и выставок",
@@ -738,6 +783,9 @@
         "nav-fav": "Избранное",
         "nav-help": "Помощь",
         "nav-settings": "Настройки",
+        "nav-adventures": "Приключения (вне Бишкека)",
+        "adv-more": "Подробнее",
+        "adv-map": "На карте",
         "nav-back": "Меню"
       },
       en: {
@@ -762,6 +810,8 @@
         "f-ai": "AI Guide",
         "f-ai-desc": "Answers any question about Bishkek and beyond",
         "f-tours": "Tours",
+        "f-adv": "Adventures",
+        "f-adv-desc": "Hiking beyond Bishkek: Son-Kul, Karakol…",
         "f-tours-desc": "Excursions and tours around Kyrgyzstan",
         "f-events": "Events",
         "f-events-desc": "Concerts, plays and exhibitions poster",
@@ -816,6 +866,9 @@
         "nav-fav": "Favorites",
         "nav-help": "Help",
         "nav-settings": "Settings",
+        "nav-adventures": "Adventures (beyond Bishkek)",
+        "adv-more": "Details",
+        "adv-map": "On the map",
         "nav-back": "Menu"
       }
     };
@@ -949,6 +1002,7 @@
     document.querySelectorAll('.feat').forEach(feat => {
       feat.addEventListener('click', function() {
         const key = this.dataset.key;
+        if (key === 'adv') { renderMainAdventures(); return; }
         openInfo();
       });
     });
@@ -979,6 +1033,7 @@
       window.location.href = 'mailto:nomadai0903@gmail.com?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
       fbSend.textContent = tr('fb-thanks');
     });
+    const ADVENTURES = [{"key": "son", "emoji": "🏞", "img": "https://static.tildacdn.com/tild3037-3836-4731-b363-646664363763/photo.jpg", "map": "Son-Kul Lake Kyrgyzstan", "name": {"ru": "Озеро Сон-Куль", "en": "Son-Kul Lake"}, "dur": {"ru": "2–3 дня", "en": "2–3 days"}, "diff": "mod", "diffLabel": {"ru": "Средне", "en": "Moderate"}, "season": {"ru": "июнь–сент", "en": "June–Sep"}, "short": {"ru": "Юрты кочевников, лошади, звёздное небо.", "en": "Nomad yurts, horses, starry skies."}, "elev": {"ru": "Высота ~3016 м", "en": "Altitude ~3016 m"}, "howto": {"ru": "Бишкек → Кочкор (~187 км, 2 ч 43 мин; такси $35–45), из Кочкора к озеру ~2 ч.", "en": "Bishkek → Kochkor (~187 km, 2h43; taxi $35–45), then ~2h to the lake."}, "guide": {"ru": "Гид не обязателен · Пропуск не нужен", "en": "Guide optional · No permit"}, "pack": {"ru": "Тёплые вещи, дождевик, крем от солнца, фонарик, наличные.", "en": "Warm clothes, rain jacket, sunscreen, headlamp, cash."}, "safety": {"ru": "Высота — возможна лёгкая горная болезнь; связь почти отсутствует.", "en": "Altitude — mild sickness possible; almost no signal."}, "disc": {"ru": "Данные ориентировочные — проверяй перед выездом.", "en": "Info is approximate — verify before you go."}}, {"key": "alakul", "emoji": "🥾", "img": "https://manas.su/assets/images/see_place/Ala-kul2.jpg", "map": "Ala-Kul Lake Karakol Kyrgyzstan", "name": {"ru": "Озеро Ала-Кёль", "en": "Ala-Kul Lake"}, "dur": {"ru": "2–4 дня", "en": "2–4 days"}, "diff": "hard", "diffLabel": {"ru": "Сложно", "en": "Hard"}, "season": {"ru": "июль–сент", "en": "July–Sep"}, "short": {"ru": "Бирюзовое озеро и перевал с видами.", "en": "Turquoise lake and a scenic pass."}, "elev": {"ru": "Озеро ~3532 м, перевал ~3860 м", "en": "Lake ~3532 m, pass ~3860 m"}, "howto": {"ru": "Бишкек → Каракол (автобус ~$5, ~6 ч; такси $80–100), далее старт тропы в Каракольском ущелье.", "en": "Bishkek → Karakol (bus ~$5, ~6h; taxi $80–100), then trailhead in Karakol gorge."}, "guide": {"ru": "Гид желателен новичкам · Вход в парк 250 сом (7–14 л. — 180) · Погранпропуск не нужен", "en": "Guide advised for beginners · Park entry 250 som (7–14: 180) · No border permit"}, "pack": {"ru": "Треккинговые ботинки, тёплый слой, дождевик, палки, вода/фильтр, аптечка.", "en": "Trekking boots, warm layer, rain jacket, poles, water/filter, first-aid."}, "safety": {"ru": "День перевала тяжёлый, осыпь и снег даже в августе; нужна физподготовка.", "en": "Pass day is tough, scree and snow even in August; fitness needed."}, "disc": {"ru": "Данные ориентировочные — проверяй перед выездом.", "en": "Info is approximate — verify before you go."}}, {"key": "altyn", "emoji": "♨️", "img": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/f1/f5/6a/caption.jpg?w=1200&h=-1&s=1", "map": "Altyn-Arashan Kyrgyzstan", "name": {"ru": "Алтын-Арашан", "en": "Altyn-Arashan"}, "dur": {"ru": "1–2 дня", "en": "1–2 days"}, "diff": "mod", "diffLabel": {"ru": "Средне", "en": "Moderate"}, "season": {"ru": "лето", "en": "summer"}, "short": {"ru": "Горячие источники с видом на горы.", "en": "Hot springs with mountain views."}, "elev": {"ru": "Высота ~2600 м", "en": "Altitude ~2600 m"}, "howto": {"ru": "Бишкек → Каракол; в Караколе маршрутка №350 до въезда в ущелье; далее 4×4 или пешком 15 км.", "en": "Bishkek → Karakol; in Karakol marshrutka #350 to the gorge entrance; then 4×4 or 15 km on foot."}, "guide": {"ru": "Гид не обязателен · Пропуск не нужен", "en": "Guide optional · No permit"}, "pack": {"ru": "Купальник и полотенце, тёплое, дождевик.", "en": "Swimsuit & towel, warm clothes, rain jacket."}, "safety": {"ru": "Дорога размывается в дождь, связь слабая.", "en": "Road washes out in rain, weak signal."}, "disc": {"ru": "Данные ориентировочные — проверяй перед выездом.", "en": "Info is approximate — verify before you go."}}, {"key": "jeti", "emoji": "🐂", "img": "https://triptokyrgyzstan.com/sites/default/files/media/image/c_genadii_vyenko_1_0.jpg", "map": "Jeti-Oguz Kyrgyzstan", "name": {"ru": "Ущелье Джети-Огуз", "en": "Jeti-Oguz Gorge"}, "dur": {"ru": "день", "en": "day"}, "diff": "easy", "diffLabel": {"ru": "Легко", "en": "Easy"}, "season": {"ru": "май–окт", "en": "May–Oct"}, "short": {"ru": "Красные скалы «Семь быков» и зелёная долина.", "en": "Red 'Seven Bulls' cliffs and a green valley."}, "elev": {"ru": "Высота ~2200 м", "en": "Altitude ~2200 m"}, "howto": {"ru": "Из Каракола — маршрутка №372 от базара Ак-Тилек; ~32 км, ~1 ч, 80–120 сом.", "en": "From Karakol — marshrutka #372 from Ak-Tilek bazaar; ~32 km, ~1h, 80–120 som."}, "guide": {"ru": "Гид не нужен · Пропуск не нужен", "en": "No guide · No permit"}, "pack": {"ru": "Удобная обувь, вода, ветровка.", "en": "Comfy shoes, water, windbreaker."}, "safety": {"ru": "", "en": ""}, "disc": {"ru": "Данные ориентировочные — проверяй перед выездом.", "en": "Info is approximate — verify before you go."}}, {"key": "skazka", "emoji": "🏜", "img": "https://triptokyrgyzstan.com/sites/default/files/media/image/c_vasca_5.jpg", "map": "Skazka Canyon Issyk-Kul Kyrgyzstan", "name": {"ru": "Каньон Сказка", "en": "Skazka Canyon"}, "dur": {"ru": "полдня", "en": "half-day"}, "diff": "easy", "diffLabel": {"ru": "Легко", "en": "Easy"}, "season": {"ru": "апр–окт", "en": "Apr–Oct"}, "short": {"ru": "«Марсианские» красно-жёлтые скалы, виды на озеро.", "en": "'Martian' red-yellow rocks, lake views."}, "elev": {"ru": "Пешком от парковки до 1500 м, до 2 ч, перепад до 50 м", "en": "From parking up to 1500 m, up to 2h, up to 50 m gain"}, "howto": {"ru": "Бишкек → каньон ~300 км, ~5 ч 10 мин (южный берег, ~4 км от с. Тосор).", "en": "Bishkek → canyon ~300 km, ~5h10 (south shore, ~4 km from Tosor)."}, "guide": {"ru": "Гид не нужен · небольшой вход возможен", "en": "No guide · small entry possible"}, "pack": {"ru": "Вода, головной убор, крем от солнца (тени нет).", "en": "Water, hat, sunscreen (no shade)."}, "safety": {"ru": "", "en": ""}, "disc": {"ru": "Данные ориентировочные — проверяй перед выездом.", "en": "Info is approximate — verify before you go."}}, {"key": "burana", "emoji": "🗼", "img": "https://cdn.pixabay.com/photo/2019/12/05/17/02/kyrgyzstan-4675660_1280.jpg", "map": "Burana Tower Kyrgyzstan", "name": {"ru": "Башня Бурана", "en": "Burana Tower"}, "dur": {"ru": "день", "en": "day"}, "diff": "easy", "diffLabel": {"ru": "Легко", "en": "Easy"}, "season": {"ru": "круглый год", "en": "year-round"}, "short": {"ru": "Средневековый минарет XI века и каменные балбалы.", "en": "11th-c. minaret and stone balbals."}, "elev": {"ru": "~80 км от Бишкека (у Токмока)", "en": "~80 km from Bishkek (near Tokmok)"}, "howto": {"ru": "На машине через ул. Ибраимова к пос. Бурана; такси ~$9–12. Вход 65 сом.", "en": "By car via Ibraimova St to Burana village; taxi ~$9–12. Entry 65 som."}, "guide": {"ru": "Гид не нужен (тур удобен для связки с Конорчек)", "en": "No guide (a tour helps combine with Konorchek)"}, "pack": {"ru": "Обувь для узкой лестницы, вода.", "en": "Shoes for the narrow stairs, water."}, "safety": {"ru": "", "en": ""}, "disc": {"ru": "Данные ориентировочные — проверяй перед выездом.", "en": "Info is approximate — verify before you go."}}];
     // ---- navigation drawer (hamburger) ----
     const drawer = document.getElementById('ndrawer');
     const ndTitle = document.getElementById('ndTitle');
@@ -1019,12 +1074,16 @@
     function navRow(ic, label, attrs, extra) {
       return '<a class="dnav ' + (attrs.indexOf('data-sub') >= 0 ? 'dnav-sub' : '') + '" ' + attrs + '>' + ic + ' <span>' + esc(label) + '</span>' + (extra || '') + '</a>';
     }
+    let catOpen = false;
     function buildNav() {
       let s = '';
       s += navRow('🏠', tr('nav-home'), 'data-act="home"');
       s += navRow('✨', tr('nav-ai'), 'data-act="bot"');
-      s += '<div class="dnav-sec">🗺 ' + tr('nav-catalog') + '</div>';
-      SITE_CATS.forEach(c => { const n = catCount(c.key); if (!n) return; s += navRow(c.ic, catLabelSite(c), 'data-sub="' + c.key + '"', '<span class="dc">' + n + '</span>'); });
+      s += navRow('🗺', tr('nav-catalog'), 'data-act="cattoggle"', '<span class="dc">' + (catOpen ? '▾' : '▸') + '</span>');
+      if (catOpen) {
+        SITE_CATS.forEach(c => { const n = catCount(c.key); if (!n) return; s += navRow(c.ic, catLabelSite(c), 'data-sub="' + c.key + '"', '<span class="dc">' + n + '</span>'); });
+      }
+      s += navRow('🏔', tr('nav-adventures'), 'data-act="adv"');
       s += navRow('🎟', tr('nav-events'), 'data-act="bot"');
       s += navRow('💱', tr('nav-currency'), 'data-act="bot"');
       s += navRow('⭐', tr('nav-fav'), 'data-act="bot"');
@@ -1052,23 +1111,129 @@
     function openDrawer() { showNav(); drawer.classList.add('open'); document.body.style.overflow = 'hidden'; if (typeof updateSticky === 'function') updateSticky(); }
     function closeDrawer() { drawer.classList.remove('open'); document.body.style.overflow = ''; if (typeof updateSticky === 'function') updateSticky(); }
 
+    const mainCatalog = document.getElementById('mainCatalog');
+    const mcTitle = document.getElementById('mcTitle');
+    const mcCount = document.getElementById('mcCount');
+    const mcBody = document.getElementById('mcBody');
+    let mv = { t: null }, curCat = null;
+    function L() { return currentLang === 'en' ? 'en' : 'ru'; }
+    function advMap(a) { return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(a.map); }
+    function diffPill(a) {
+      const cls = a.diff === 'easy' ? 'pill-easy' : (a.diff === 'hard' ? 'pill-hard' : 'pill-mod');
+      return '<span class="pill ' + cls + '">⛰ ' + esc(a.diffLabel[L()]) + '</span>';
+    }
+    function catIconFor(p) { const c = SITE_CATS.find(x => x.key === siteCat(p)); return c ? c.ic : '📍'; }
+    function lrow(attr, ic, name, sub) {
+      return '<div class="lrow" ' + attr + '><span class="lr-ic">' + ic + '</span>'
+        + '<div class="lr-txt"><div class="lr-name">' + esc(name) + '</div><div class="lr-sub">' + sub + '</div></div>'
+        + '<span class="lr-ch">›</span></div>';
+    }
+    function fact(ic, txt) { return txt ? '<div class="d-fact">' + ic + ' ' + esc(txt) + '</div>' : ''; }
+
+    function renderMainCatalog(key) {
+      curCat = key;
+      const items = CATALOG.filter(p => siteCat(p) === key);
+      const meta = SITE_CATS.find(c => c.key === key);
+      mcTitle.textContent = (meta ? meta.ic + ' ' : '') + (meta ? catLabelSite(meta) : '');
+      mcCount.textContent = items.length + ' ' + tr('results');
+      mcBody.innerHTML = items.map(p => {
+        const gi = CATALOG.indexOf(p);
+        const sub = '🥛 ' + p.rating + ' · ' + esc(fld(p, 'price'));
+        return lrow('data-place="' + gi + '"', catIconFor(p), fld(p, 'name'), sub);
+      }).join('');
+      mainCatalog.style.display = '';
+      mv = { t: 'catlist', key: key };
+      mainCatalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function renderPlaceDetail(gi) {
+      const p = CATALOG[gi]; if (!p) return;
+      const meta = SITE_CATS.find(c => c.key === siteCat(p));
+      mcTitle.textContent = (meta ? meta.ic + ' ' : '') + (meta ? catLabelSite(meta) : '');
+      mcCount.textContent = '';
+      const cm = SITE_CATS.find(c => c.key === curCat);
+      const backLabel = '← ' + (cm ? catLabelSite(cm) : tr('nav-back'));
+      mcBody.innerHTML = placeCard(p)
+        + '<div class="np-actions"><a class="np-link np-more" data-placeback="1">' + esc(backLabel) + '</a></div>';
+      mv = { t: 'catdetail', gi: gi };
+      mainCatalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderMainAdventures() {
+      const lang = L();
+      mcTitle.textContent = '🏔 ' + tr('nav-adventures');
+      mcCount.textContent = ADVENTURES.length + ' ' + tr('results');
+      mcBody.innerHTML = ADVENTURES.map((a, i) => {
+        const sub = esc(a.dur[lang]) + ' · ' + diffPill(a) + ' · ' + esc(a.season[lang]);
+        return lrow('data-adv="' + i + '"', a.emoji, a.name[lang], sub);
+      }).join('');
+      mainCatalog.style.display = '';
+      mv = { t: 'advlist' };
+      mainCatalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function renderAdventureDetail(i) {
+      const a = ADVENTURES[i]; if (!a) return;
+      const lang = L();
+      const photo = a.img
+        ? '<img class="adv-photo" src="' + a.img + '" alt="' + esc(a.name[lang]) + '" onerror="this.remove()">'
+        : '<div class="adv-photo adv-photo-ph">' + a.emoji + '</div>';
+      mcTitle.textContent = a.emoji + ' ' + a.name[lang];
+      mcCount.textContent = '';
+      mcBody.innerHTML = '<div class="nplace">' + photo
+        + '<div class="np-name">' + esc(a.emoji + ' ' + a.name[lang]) + '</div>'
+        + '<div class="d-pills">🕒 ' + esc(a.dur[lang]) + ' · ' + diffPill(a) + ' · 📅 ' + esc(a.season[lang]) + '</div>'
+        + fact('📏', a.elev[lang])
+        + fact('🚗', a.howto[lang])
+        + fact('🎫', a.guide[lang])
+        + fact('✨', a.short[lang])
+        + fact('🎒', a.pack[lang])
+        + (a.safety && a.safety[lang] ? fact('⚠️', a.safety[lang]) : '')
+        + '<div class="d-note">ℹ️ ' + esc(a.disc[lang]) + '</div>'
+        + '<div class="np-actions">'
+        + '<a class="np-link" href="' + advMap(a) + '" target="_blank" rel="noopener">🧭 ' + tr('adv-map') + '</a>'
+        + '<a class="np-link np-more" data-advback="1">← ' + tr('nav-adventures') + '</a>'
+        + '</div></div>';
+      mv = { t: 'advdetail', i: i };
+      mainCatalog.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    document.getElementById('mcClose').addEventListener('click', () => {
+      mainCatalog.style.display = 'none';
+      mv = { t: null };
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    mcBody.addEventListener('click', function (e) {
+      const pl = e.target.closest ? e.target.closest('[data-place]') : null;
+      if (pl) { renderPlaceDetail(+pl.dataset.place); return; }
+      const pb = e.target.closest ? e.target.closest('[data-placeback]') : null;
+      if (pb) { renderMainCatalog(curCat); return; }
+      const ad = e.target.closest ? e.target.closest('[data-adv]') : null;
+      if (ad) { renderAdventureDetail(+ad.dataset.adv); return; }
+      const ab = e.target.closest ? e.target.closest('[data-advback]') : null;
+      if (ab) { renderMainAdventures(); return; }
+    });
     document.getElementById('menuBtn').addEventListener('click', openDrawer);
     document.getElementById('ndClose').addEventListener('click', closeDrawer);
     drawer.addEventListener('click', e => { if (e.target === drawer) closeDrawer(); });
     ndBack.addEventListener('click', showNav);
     ndNav.addEventListener('click', function (e) {
       const sub = e.target.closest ? e.target.closest('[data-sub]') : null;
-      if (sub) { showSub(sub.dataset.sub); return; }
+      if (sub) { closeDrawer(); renderMainCatalog(sub.dataset.sub); return; }
       const a = e.target.closest ? e.target.closest('[data-act]') : null;
       if (!a) return;
       const act = a.dataset.act;
+      if (act === 'cattoggle') { catOpen = !catOpen; buildNav(); return; }
       if (act === 'home') { closeDrawer(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       else if (act === 'help') { closeDrawer(); const c = document.getElementById('contacts'); if (c) c.scrollIntoView({ behavior: 'smooth' }); }
+      else if (act === 'adv') { closeDrawer(); renderMainAdventures(); }
       else if (act === 'bot') { closeDrawer(); openBot(); }
     });
     document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => {
-      if (!drawer.classList.contains('open')) return;
-      if (drawerSub) showSub(drawerSub); else showNav();
+      if (mainCatalog.style.display !== 'none') {
+        if (mv.t === 'catlist') renderMainCatalog(mv.key);
+        else if (mv.t === 'catdetail') renderPlaceDetail(mv.gi);
+        else if (mv.t === 'advlist') renderMainAdventures();
+        else if (mv.t === 'advdetail') renderAdventureDetail(mv.i);
+      }
+      if (drawer.classList.contains('open')) showNav();
     }));
     let _tsx = 0, _tsy = 0;
     document.addEventListener('touchstart', e => { _tsx = e.touches[0].clientX; _tsy = e.touches[0].clientY; }, { passive: true });
